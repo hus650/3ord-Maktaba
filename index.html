@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مكتبة ألحلبيه | فهرس الكتب</title>
-<meta name="description" content="فهرس مكتبة ألحلبيه تحقق من توفر الكتب قبل زيارتك">
+<title>مكتبة الحلبية | فهرس الكتب</title>
+<meta name="description" content="فهرس مكتبة الحلبية: تحقق من توفر الكتب قبل زيارتك">
 <style>
 :root{--bg:#121614;--surface:#1a211d;--surface2:#212a25;--gold:#c5a059;--text:#e2e8f0;--muted:#94a3b8;--line:#2d3732;--green:#4ade80;--red:#f87171}
 *{box-sizing:border-box}
@@ -76,6 +76,13 @@ button:active{transform:scale(.97)}
 .ditem .rm{background:none;border:none;color:var(--red);font-size:.8rem}
 .dfoot{padding:16px 20px;border-top:1px solid var(--line);display:flex;gap:10px}
 .dfoot .btn{flex:1}
+.dfoot{flex-wrap:wrap}
+.btn.wa{background:#25d366;color:#fff;flex:1 1 100%}
+.btn.wa:hover{background:#20ba5a}
+.dextra{padding:14px 20px 0;border-top:1px solid var(--line)}
+.dextra label{display:block;font-size:.78rem;color:var(--muted);margin-bottom:6px}
+.dextra textarea{width:100%;min-height:68px;resize:vertical;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px;font-family:inherit;font-size:.85rem;outline:none}
+.dextra textarea:focus{border-color:var(--gold)}
 
 /* ===== عناصر إضافية ===== */
 .toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,30px);background:var(--surface2);border:1px solid var(--gold);color:var(--text);padding:10px 20px;border-radius:12px;font-size:.85rem;opacity:0;visibility:hidden;transition:all .3s;z-index:2000}
@@ -96,7 +103,7 @@ footer{text-align:center;padding:24px 16px 34px;color:var(--muted);font-size:.75
 
 <header class="hero">
   <div class="mark">☪</div>
-  <h1>مكتبة ألحلبيه</h1>
+  <h1>مكتبة الحلبية</h1>
   <p>تصفّح فهرس الكتب وتحقّق من توفّرها قبل زيارتك، وأضف ما يعجبك إلى المفضلة</p>
   <div class="bar">
     <input type="search" id="q" placeholder="ابحث بعنوان الكتاب أو المؤلف..." autocomplete="off">
@@ -130,13 +137,21 @@ footer{text-align:center;padding:24px 16px 34px;color:var(--muted);font-size:.75
   <div class="more"><button class="btn ghost" id="more" hidden>عرض المزيد</button></div>
 </main>
 
-<footer>مكتبة أهل العلم · الفهرس للاطلاع على توفر الكتب فقط</footer>
+<footer>مكتبة الحلبية · الفهرس للاطلاع على توفر الكتب فقط</footer>
 
 <div class="overlay" id="overlay">
   <aside class="drawer" role="dialog" aria-label="المفضلة">
     <div class="dhead"><h2>كتبي المفضلة</h2><button class="x" id="closeFav" aria-label="إغلاق">&times;</button></div>
     <div class="dlist" id="dlist"></div>
-    <div class="dfoot"><button class="btn danger" id="clearFav">مسح الكل</button><button class="btn" id="doneFav">تم</button></div>
+    <div class="dextra">
+      <label for="extraBooks">هل تبحث عن كتاب غير موجود في الفهرس؟ اكتب اسمه هنا (اختياري)</label>
+      <textarea id="extraBooks" placeholder="مثال: اسم الكتاب، واسم المؤلف إن عرفته"></textarea>
+    </div>
+    <div class="dfoot">
+      <button class="btn wa" id="waBtn">إرسال القائمة عبر واتساب</button>
+      <button class="btn danger" id="clearFav">مسح الكل</button>
+      <button class="btn" id="doneFav">تم</button>
+    </div>
   </aside>
 </div>
 
@@ -265,6 +280,21 @@ $('doneFav').onclick = closeFav;
 $('overlay').addEventListener('click', e => { if (e.target === $('overlay')) closeFav(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeFav(); });
 $('clearFav').onclick = () => { if (confirm('هل تريد مسح كل المفضلة؟')) { setFavs([]); $('favCount').textContent = 0; renderFav(); render(); } };
+// ===== إرسال القائمة عبر واتساب =====
+const WA_NUMBER = '963985503811'; // رقم المكتبة بدون + وبدون مسافات
+$('waBtn').onclick = () => {
+  const list = getFavs().map(id => books.find(b => b.id === id)).filter(Boolean);
+  const extra = $('extraBooks').value.trim();
+  if (!list.length && !extra) { toast('أضف كتباً إلى المفضلة أو اكتب اسم كتاب أولاً'); return; }
+  const line = (b, i) => (i + 1) + '. ' + b.title + (b.author ? ' (' + b.author + ')' : '') + '\n';
+  const avail = list.filter(b => b.inStock), out = list.filter(b => !b.inStock);
+  let m = 'السلام عليكم ورحمة الله وبركاته،\n';
+  if (avail.length) { m += '\nأرغب في الاستفسار عن الكتب التالية:\n'; avail.forEach((b, i) => m += line(b, i)); }
+  if (out.length) { m += '\nكتب ظهرت «نفذت الكمية» وأرغب بمعرفة موعد توفرها:\n'; out.forEach((b, i) => m += line(b, i)); }
+  if (extra) m += '\nكتب غير موجودة في الفهرس وأسأل عن توفرها:\n' + extra + '\n';
+  m += '\nجزاكم الله خيراً.';
+  window.open('https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(m), '_blank');
+};
 $('top').onclick = () => window.scrollTo({ top: 0 });
 window.addEventListener('scroll', () => $('top').classList.toggle('show', window.scrollY > 500));
 
