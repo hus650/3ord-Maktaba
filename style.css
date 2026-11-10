@@ -1,0 +1,115 @@
+:root {
+  --bg-primary: #121614;
+  --bg-surface: #1a211d;
+  --accent-gold: #c5a059;
+  --text-main: #e2e8f0;
+  --text-muted: #94a3b8;
+  --border-subtle: #2d3732;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: 'Cairo', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  margin: 0; padding: 0; direction: rtl;
+  -webkit-font-smoothing: antialiased;
+}
+a { text-decoration: none; }
+
+/* ===== الرأس ===== */
+.library-header {
+  background: linear-gradient(180deg, #18201b 0%, var(--bg-primary) 100%);
+  padding: 32px 16px 24px; border-bottom: 1px solid var(--border-subtle); text-align: center;
+}
+.library-header h1 { font-size: 1.5rem; font-weight: 600; color: #f8fafc; margin: 0 0 6px; }
+.library-header p { font-size: .85rem; color: var(--text-muted); margin: 0 0 20px; font-weight: 300; }
+.search-filter-bar {
+  display: flex; gap: 10px; justify-content: center; align-items: center;
+  flex-wrap: wrap; max-width: 700px; margin: 0 auto;
+}
+.search-filter-bar input, .search-filter-bar select {
+  background-color: var(--bg-surface); color: var(--text-main);
+  border: 1px solid var(--border-subtle); padding: 10px 14px; border-radius: 12px;
+  font-size: .9rem; font-family: inherit; outline: none; transition: border-color .2s;
+}
+.search-filter-bar input:focus, .search-filter-bar select:focus { border-color: var(--accent-gold); }
+.search-filter-bar input { flex: 1; min-width: 200px; }
+
+/* ===== الأزرار ===== */
+button { position: relative; overflow: hidden; cursor: pointer; font-family: inherit; }
+button:active { transform: scale(.97); }
+.btn-fav {
+  display: inline-block; background: transparent; color: var(--accent-gold);
+  border: 1px solid var(--accent-gold); font-weight: 500; font-size: .85rem;
+  padding: 10px 16px; border-radius: 12px; transition: all .2s ease; white-space: nowrap;
+}
+.btn-fav:hover { background-color: var(--accent-gold); color: var(--bg-primary); }
+.btn {
+  background: var(--accent-gold); color: var(--bg-primary); border: none;
+  padding: 10px 18px; border-radius: 12px; font-weight: 600; font-size: .9rem;
+}
+.btn.ghost { background: transparent; color: var(--accent-gold); border: 1px solid var(--accent-gold); }
+.btn.danger { background: transparent; color: #f87171; border: 1px solid #f87171; }
+.btn.sm { padding: 6px 10px; font-size: .78rem; border-radius: 8px; }
+
+/* ===== بطاقات الكتب ===== */
+.container { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
+.books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+.book-card {
+  background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 16px;
+  padding: 14px; display: flex; flex-direction: column; justify-content: space-between;
+  animation: fadeInUp .4s cubic-bezier(.16, 1, .3, 1) forwards;
+  transition: border-color .2s ease, transform .2s ease;
+}
+.book-card:hover { border-color: rgba(197, 160, 89, .4); transform: translateY(-2px); }
+.book-card.is-out { opacity: .65; }
+.book-badge {
+  background-color: rgba(255, 255, 255, .03); color: var(--text-muted); font-size: .7rem;
+  padding: 2px 8px; border-radius: 6px; display: inline-block; margin-bottom: 8px;
+  border: 1px solid rgba(255, 255, 255, .04);
+}
+.badge-stock { display: inline-block; font-size: .7rem; padding: 2px 8px; border-radius: 6px; margin-inline-start: 6px; }
+.badge-stock.in { background: rgba(37, 211, 102, .12); color: #4ade80; border: 1px solid rgba(37, 211, 102, .3); }
+.badge-stock.out { background: rgba(239, 68, 68, .12); color: #f87171; border: 1px solid rgba(239, 68, 68, .3); }
+.book-card h3 { font-size: .95rem; font-weight: 600; margin: 0 0 4px; color: #f1f5f9; line-height: 1.4; }
+.book-card p { color: var(--text-muted); font-size: .75rem; margin: 0 0 12px; }
+.btn-add {
+  background-color: rgba(255, 255, 255, .05); color: var(--text-main);
+  border: 1px solid var(--border-subtle); padding: 8px 12px; border-radius: 10px;
+  font-size: .75rem; width: 100%; transition: background .2s, color .2s, border-color .2s;
+}
+.btn-add:hover { background-color: var(--accent-gold); color: var(--bg-primary); border-color: var(--accent-gold); }
+.btn-add.active { background-color: rgba(197, 160, 89, .15); border-color: var(--accent-gold); color: var(--accent-gold); }
+.more-wrap { text-align: center; margin: 24px 0; }
+.empty-msg { grid-column: 1 / -1; text-align: center; color: var(--text-muted); margin-top: 30px; }
+.page-tools { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
+.page-tools span { color: var(--text-muted); font-size: .9rem; }
+
+/* ===== لوحة التحكم ===== */
+.panel { max-width: 900px; margin: 0 auto; padding: 20px 16px; }
+.card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 18px; margin-bottom: 16px; }
+.card h2 { margin: 0 0 12px; font-size: 1.05rem; }
+.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+.field label { font-size: .8rem; color: var(--text-muted); }
+.field input, .field select, .field textarea, .tools input, .tools select {
+  background: var(--bg-primary); color: var(--text-main); border: 1px solid var(--border-subtle);
+  padding: 10px 12px; border-radius: 10px; font-family: inherit; font-size: .9rem; outline: none;
+}
+.field textarea { min-height: 160px; }
+.tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.tabs .btn { flex: 1; }
+.tools { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.tools input { flex: 1; min-width: 160px; }
+.row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border-subtle); flex-wrap: wrap; }
+.row .info { flex: 1; min-width: 180px; }
+.row .info b { display: block; font-size: .92rem; }
+.row .info span { font-size: .75rem; color: var(--text-muted); }
+.row .acts { display: flex; gap: 6px; }
+.stats { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 12px; font-size: .85rem; color: var(--text-muted); }
+.msg { font-size: .85rem; margin-top: 8px; color: var(--accent-gold); }
+.pager { display: flex; justify-content: center; gap: 10px; margin-top: 14px; align-items: center; }
+
+@media (max-width: 480px) {
+  .books-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+}

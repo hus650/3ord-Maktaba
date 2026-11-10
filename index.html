@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مكتبة أهل العلم | الاستعارة السريعة</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="library-header">
+    <h1>مكتبة أهل العلم</h1>
+    <p>اختر العناوين المطلوبة وأرسل القائمة عبر واتساب للاستلام المباشر</p>
+    
+    <div class="search-filter-bar">
+      <input type="text" id="searchInput" placeholder="بحث في العناوين أو المؤلفين...">
+      
+      <select id="levelFilter">
+        <option value="all">كافة المستويات</option>
+        <option value="beginner">مبتدئ</option>
+        <option value="intermediate">متوسط</option>
+        <option value="advanced">متقدم</option>
+      </select>
+
+      <!-- Favoriler / Seçilenler Butonu -->
+      <button id="openFavoritesBtn" class="btn-fav">
+        القائمة المختارة (<span id="favCount">0</span>)
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="booksGrid" class="books-grid"></div>
+  </main>
+
+  <!-- Favoriler / Sepet Çekmece Paneli (Drawer) -->
+  <div id="favoritesDrawer" class="drawer-overlay">
+    <div class="drawer-content">
+      <div class="drawer-header">
+        <h2>الكتب المختارة للاستلام</h2>
+        <button id="closeDrawerBtn" class="btn-close">&times;</button>
+      </div>
+      
+      <div id="drawerItemsList" class="drawer-items">
+        <!-- Seçilen kitaplar buraya dinamik gelecek -->
+      </div>
+
+      <div class="drawer-footer">
+        <button id="whatsappOrderBtn" class="btn-whatsapp">إرسال الطلب عبر واتساب</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
